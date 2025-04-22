@@ -143,8 +143,8 @@
     <ClInclude Include="scr\Games\FlappyBird\FlappyBird.h" />
     <ClInclude Include="scr\Games\General\Game.h" />
     <ClInclude Include="scr\Classes\Object.h" />
-    <ClInclude Include="scr\Debug\Printing.h" />
-    <ClInclude Include="scr\Debug\Settings.h" />
+    <ClInclude Include="scr\DebugHelper\Printing.h" />
+    <ClInclude Include="scr\DebugHelper\Settings.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

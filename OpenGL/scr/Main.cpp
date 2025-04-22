@@ -1,7 +1,7 @@
 ﻿#include <iostream>
 
-#include "Debug/Printing.h"
-#include "Debug/Settings.h"
+#include "DebugHelper/Printing.h"
+#include "DebugHelper/Settings.h"
 
 #include "Games/FlappyBird/FlappyBird.h"
 

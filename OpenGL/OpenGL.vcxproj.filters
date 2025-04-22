@@ -29,10 +29,10 @@
     <ClInclude Include="scr\Classes\Object.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Debug\Printing.h">
+    <ClInclude Include="scr\DebugHelper\Printing.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Debug\Settings.h">
+    <ClInclude Include="scr\DebugHelper\Settings.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="scr\Games\General\Game.h">

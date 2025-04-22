@@ -1,7 +1,7 @@
 #pragma once
 
 #include "../General/Game.h"
-#include "../../Debug/Printing.h"
+#include "../../DebugHelper/Printing.h"
 
 class FlappyBird : public Game
 {

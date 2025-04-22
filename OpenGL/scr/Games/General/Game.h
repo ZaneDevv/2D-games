@@ -3,8 +3,8 @@
 #include <iostream>
 #include <GLFW/glfw3.h>
 
-#include "../../Debug/Printing.h"
-#include "../../Debug/Settings.h"
+#include "../../DebugHelper/Printing.h"
+#include "../../DebugHelper/Settings.h"
 
 class Game
 {
