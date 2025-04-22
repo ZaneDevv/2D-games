@@ -3,6 +3,9 @@
 #include "../General/Game.h"
 #include "../../DebugHelper/Printing.h"
 
+#include "../../Libraries/ImageLoader.h"
+
+
 class FlappyBird : public Game
 {
 public:

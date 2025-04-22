@@ -7,7 +7,8 @@ FlappyBird::FlappyBird() {
 }
 
 void FlappyBird::OnScreenCreated() {
-	
+
+
 }
 
 void FlappyBird::Update(double dt) {
@@ -20,5 +21,5 @@ void FlappyBird::UpdatePhysics() {
 }
 
 void FlappyBird::UpdateGraphics() {
-
+    
 }
