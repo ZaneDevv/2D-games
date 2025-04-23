@@ -41,7 +41,7 @@
     <ClInclude Include="scr\Games\FlappyBird\FlappyBird.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="scr\Libraries\ImageLoader.h">
+    <ClInclude Include="scr\Libraries\stb_image.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

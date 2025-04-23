@@ -2,9 +2,7 @@
 
 This little project has a few simple 2D videogames you can open the terminal.
 
-This project uses several frameworks as [`OpenGL`](https://www.opengl.org/).
-
-#
+This project uses several frameworks as [`OpenGL`](https://www.opengl.org/), [`stb_image.h`](https://github.com/nothings/stb/blob/master/stb_image.h?utm_source=chatgpt.com).
 
 ## Games to play
 

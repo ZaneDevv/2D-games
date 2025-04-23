@@ -31,3 +31,4 @@
 #define DEBUG_PRINT(x) PRINT(CYAN << "[DEBUG]: " << x << RESET_COLOR)
 #define WARNING_PRINT(x) PRINT(YELLOW << "[WARN]: " << x << RESET_COLOR)
 #define ERROR_PRINT(x) PRINT(RED << "[ERROR]: " << x << RESET_COLOR)
+#define SUCCESS_PRINT(x) PRINT(GREEN << "[SUCCESS]: " << x << RESET_COLOR)

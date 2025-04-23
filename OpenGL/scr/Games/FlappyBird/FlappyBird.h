@@ -3,7 +3,7 @@
 #include "../General/Game.h"
 #include "../../DebugHelper/Printing.h"
 
-#include "../../Libraries/ImageLoader.h"
+#include "../../Libraries/stb_image.h"
 
 
 class FlappyBird : public Game
