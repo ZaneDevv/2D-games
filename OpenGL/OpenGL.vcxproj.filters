@@ -24,6 +24,9 @@
     <ClCompile Include="scr\Games\FlappyBird\FlappyBird.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="scr\Games\General\Sprite.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="scr\Classes\Object.h">

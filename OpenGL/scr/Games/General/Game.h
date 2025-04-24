@@ -21,18 +21,15 @@ protected:
 
 	GLFWwindow* window = nullptr;
 
-	GLuint quadVAO = 0;
-	GLuint quadVBO = 0;
-	GLuint quadEBO = 0;
-
 	std::vector<Sprite> images = {};
 
 	/*
 	* @brief Creates a new image to render on Screen
 	* @param Path to the image
+	* @return The sprite you have made
 	* @author ZaneDevv
 	*/
-	void CreateImage(const char*);
+	Sprite CreateImage(const char*);
 
 private:
 	GLuint shaderProgram = 0;
@@ -65,12 +62,6 @@ private:
 	)";
 
 	/*
-	* @brief Creates a quad so we can render images on screen
-	* @author ZaneDevv
-	*/
-	void CreateQuad();
-
-	/*
 	* @brief Compiles a Shader program
 	* @param Shader code to be compiled
 	* @param Kind of shader (Vertex shader/Fragment shader)
@@ -83,13 +74,6 @@ private:
 	* @author ZaneDevv
 	*/
 	GLuint CreateShaderProgram();
-
-	/*
-	* Loads a new image on screen
-	* @param Path to the image
-	* @author ZaneDevv
-	*/
-	GLuint LoadTexture(const char* path);
 
 public:
 	/*

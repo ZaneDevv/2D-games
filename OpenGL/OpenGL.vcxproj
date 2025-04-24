@@ -137,6 +137,7 @@
   <ItemGroup>
     <ClCompile Include="scr\Games\FlappyBird\FlappyBird.cpp" />
     <ClCompile Include="scr\Games\General\Game.cpp" />
+    <ClCompile Include="scr\Games\General\Sprite.cpp" />
     <ClCompile Include="scr\Main.cpp" />
   </ItemGroup>
   <ItemGroup>
