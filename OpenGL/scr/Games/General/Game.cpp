@@ -32,6 +32,7 @@ void Game::CreateImage(const char* path) {
 }
 
 GLuint Game::CompileShader(const char* source, GLenum type) {
+	// Compiling shader
 	GLuint shader = glCreateShader(type);
 	glShaderSource(shader, 1, &source, nullptr);
 	glCompileShader(shader);
@@ -56,9 +57,11 @@ GLuint Game::CompileShader(const char* source, GLenum type) {
 }
 
 GLuint Game::CreateShaderProgram() {
+	// Creating vertex and fragment shaders
 	GLuint vertexShader = this->CompileShader(this->vertexShaderCode, GL_VERTEX_SHADER);
 	GLuint fragmentShader = this->CompileShader(this->fragmentShaderCode, GL_FRAGMENT_SHADER);
 
+	// Creating a shader program
 	GLuint shaderProgram = glCreateProgram();
 	glAttachShader(shaderProgram, vertexShader);
 	glAttachShader(shaderProgram, fragmentShader);
@@ -81,6 +84,7 @@ GLuint Game::CreateShaderProgram() {
 }
 
 void Game::CreateWindow() {
+	// Initializing glfw for the window
 	if (!glfwInit()) {
 
 		if (DEBUGGING) {
@@ -90,6 +94,7 @@ void Game::CreateWindow() {
 		return;
 	}
 
+	// Creating window
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
@@ -111,6 +116,7 @@ void Game::CreateWindow() {
 
 	glfwMakeContextCurrent(this->window);
 
+	// Initializing glew to have modern OpenGL functions
 	glewExperimental = GL_TRUE;
 	GLenum glewStatus = glewInit();
 
@@ -127,12 +133,14 @@ void Game::CreateWindow() {
 		SUCCESS_PRINT("Window created.");
 	}
 
+	// Calling functions when the window is successfully created
 	this->shaderProgram = this->CreateShaderProgram();
 
 	this->OnScreenCreated();
 }
 
 void Game::StartLoop() {
+	// Ensuring the window exists
 	if (this->window == nullptr) {
 
 		if (DEBUGGING) {
@@ -142,16 +150,18 @@ void Game::StartLoop() {
 		return;
 	}
 
+	// Calculating delta time
 	double lastTime = glfwGetTime();
 	double deltaTime = 0;
 
+	// Updating the whole code
 	while (!glfwWindowShouldClose(this->window)) {
 		double currentTime = glfwGetTime();
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
 		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(shaderProgram);
+		glUseProgram(this->shaderProgram);
 
 		glfwPollEvents();
 
