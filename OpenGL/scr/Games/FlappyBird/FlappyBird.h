@@ -32,10 +32,4 @@ public:
 	* @author ZaneDevv
 	*/
 	void UpdatePhysics();
-
-	/*
-	* @brief Updates graphics
-	* @author ZaneDevv
-	*/
-	void UpdateGraphics() override;
 };

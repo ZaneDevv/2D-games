@@ -1,34 +1,111 @@
 #include "Game.h"
 
+#define STB_IMAGE_IMPLEMENTATION
+#include "../../Libraries/stb_image.h"
+
+void Game::CreateQuad() {
+	float vertices[] = {
+		// Positions         Texture coordinates
+		-1.0f,  1.0f, 0.0f,  0.0f, 1.0f, // Top - left
+		-1.0f, -1.0f, 0.0f,  0.0f, 0.0f, // Bottom - left
+		 1.0f, -1.0f, 0.0f,  1.0f, 0.0f, // Bottom - right
+		 1.0f,  1.0f, 0.0f,  1.0f, 1.0f  // Top - right
+	};
+	unsigned int indices[] = {
+		0, 1, 2,
+		0, 2, 3
+	};
+
+	glGenVertexArrays(1, &this->quadVAO);
+	glGenBuffers(1, &this->quadVBO);
+	glGenBuffers(1, &this->quadEBO);
+
+	if (this->quadVAO == 0 || this->quadVBO == 0 || this->quadEBO == 0) {
+
+		if (DEBUGGING) {
+			ERROR_PRINT("OpenGL buffers not initialized!");
+		}
+
+		return;
+	}
+
+
+	if (DEBUGGING) {
+		DEBUG_PRINT("Buffers initializated");
+	}
+
+	glBindVertexArray(quadVAO);
+
+	glBindBuffer(GL_ARRAY_BUFFER, this->quadVBO);
+	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, this->quadEBO);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
+
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
+	glEnableVertexAttribArray(0);
+
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
+	glEnableVertexAttribArray(1);
+
+	glBindVertexArray(0);
+}
+
+GLuint Game::LoadTexture(const char* path) {
+	GLuint texture = 0;
+	glGenTextures(1, &texture);
+	glBindTexture(GL_TEXTURE_2D, texture);
+
+
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+	int width = 0;
+	int height = 0;
+	int nrChannels = 0;
+	unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+
+	if (!data) {
+
+		if (DEBUGGING) {
+			ERROR_PRINT("Texture loading failed: " << path);
+		}
+
+		stbi_image_free(data);
+		return texture;
+	}
+
+	// Checking if the BPU can work with the size of the image
+	GLint maxTextureSize = 0;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+
+	if (width > maxTextureSize || height > maxTextureSize) {
+		ERROR_PRINT("Texture exceeds max allowed size: " << width << "x" << height);
+		stbi_image_free(data);
+		return texture;
+	}
+
+	// Checking if the image has a supported number of channels
+	if (nrChannels != 3 && nrChannels != 4) {
+		ERROR_PRINT("Unsupported image format -> Only RGB or RGBA allowed.");
+		stbi_image_free(data);
+		return texture;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glGenerateMipmap(GL_TEXTURE_2D);
+
+	stbi_image_free(data);
+
+	return texture;
+}
+
 void Game::CreateImage(const char* path) {
-	/*GLuint image;
-	glGenTextures(1, &image);
- 	glBindTexture(GL_TEXTURE_2D, image);
-
- 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
- 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
- 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
- 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	 
- 	int width, height, nrChannels = 0;
- 	stbi_set_flip_vertically_on_load(true);
-
- 	unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
-
- 	if (data) {
- 		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
- 		glGenerateMipmap(GL_TEXTURE_2D);
-	}
-	else {
- 		ERROR_PRINT("Failed to load texture");
- 	}
- 	stbi_image_free(data);
-
- 	if (DEBUGGING) {
- 		DEBUG_PRINT("Image created!");
-	}
-
-	this->images.push_back(image);*/
+	GLuint texture = LoadTexture(path);
+	Sprite sprite(texture);
+	this->images.push_back(sprite);
 }
 
 GLuint Game::CompileShader(const char* source, GLenum type) {
@@ -77,8 +154,8 @@ GLuint Game::CreateShaderProgram() {
 		ERROR_PRINT("Program linking failed: " << errorMessage);
 	}
 
-	//glDeleteShader(vertexShader);
-	//glDeleteShader(fragmentShader);
+	glDeleteShader(vertexShader);
+	glDeleteShader(fragmentShader);
 
 	return shaderProgram;
 }
@@ -136,6 +213,7 @@ void Game::CreateWindow() {
 	// Calling functions when the window is successfully created
 	this->shaderProgram = this->CreateShaderProgram();
 
+	this->CreateQuad();
 	this->OnScreenCreated();
 }
 
@@ -160,21 +238,29 @@ void Game::StartLoop() {
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
-		glClear(GL_COLOR_BUFFER_BIT);
-		glUseProgram(this->shaderProgram);
-
-		glfwPollEvents();
-
-		for (GLuint image : this->images) {
-			glBindTexture(GL_TEXTURE_2D, image);
-		}
-
+		this->UpdateGraphics();
 		this->Update(deltaTime);
 
 		glfwSwapBuffers(this->window);
+		glfwPollEvents();
 	}
 
 	this->CloseGame();
+}
+
+void Game::UpdateGraphics() {
+	glClear(GL_COLOR_BUFFER_BIT);
+	glUseProgram(this->shaderProgram);
+
+	glBindVertexArray(this->quadVAO);
+	glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+
+	for (const Sprite& image : this->images) {
+		glBindTexture(GL_TEXTURE_2D, image.Image);
+		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+	}
+
+	glBindVertexArray(0);
 }
 
 void Game::CloseGame() {

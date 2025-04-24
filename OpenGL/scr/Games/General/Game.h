@@ -1,11 +1,12 @@
 #pragma once
 
+
 #include <iostream>
 #include <vector>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../../Libraries/stb_image.h"
+#include "Sprite.h"
 
 #include "../../DebugHelper/Printing.h"
 #include "../../DebugHelper/Settings.h"
@@ -20,7 +21,11 @@ protected:
 
 	GLFWwindow* window = nullptr;
 
-	std::vector<GLuint> images = {};
+	GLuint quadVAO = 0;
+	GLuint quadVBO = 0;
+	GLuint quadEBO = 0;
+
+	std::vector<Sprite> images = {};
 
 	/*
 	* @brief Creates a new image to render on Screen
@@ -30,7 +35,7 @@ protected:
 	void CreateImage(const char*);
 
 private:
-	GLuint shaderProgram;
+	GLuint shaderProgram = 0;
 
 	const char* vertexShaderCode = R"(
 		#version 330 core
@@ -58,6 +63,12 @@ private:
 			FragColor = texture(texture1, TexCoord);
 		}
 	)";
+
+	/*
+	* @brief Creates a quad so we can render images on screen
+	* @author ZaneDevv
+	*/
+	void CreateQuad();
 
 	/*
 	* @brief Compiles a Shader program
@@ -104,7 +115,7 @@ public:
 	* @brief Updates graphics
 	* @author ZaneDevv
 	*/
-	virtual void UpdateGraphics() = 0;
+	void UpdateGraphics() ;
 
 	/*
 	* @brief Starts the game

@@ -7,19 +7,13 @@ FlappyBird::FlappyBird() {
 }
 
 void FlappyBird::OnScreenCreated() {
-
-
+	this->CreateImage("C:/Users/User/Pictures/9906ac83676244eb8260e62a902b4d98.jpg");
 }
 
 void FlappyBird::Update(double dt) {
 	this->UpdatePhysics();
-	this->UpdateGraphics();
 }
 
 void FlappyBird::UpdatePhysics() {
 
-}
-
-void FlappyBird::UpdateGraphics() {
-    
 }

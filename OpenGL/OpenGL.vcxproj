@@ -145,6 +145,7 @@
     <ClInclude Include="scr\Classes\Object.h" />
     <ClInclude Include="scr\DebugHelper\Printing.h" />
     <ClInclude Include="scr\DebugHelper\Settings.h" />
+    <ClInclude Include="scr\Games\General\Sprite.h" />
     <ClInclude Include="scr\Libraries\stb_image.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
