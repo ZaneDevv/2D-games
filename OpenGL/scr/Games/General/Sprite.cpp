@@ -1,11 +1,27 @@
 #include "Sprite.h"
 
+#pragma warning(push)
+#pragma warning(disable : 6001)
+#pragma warning(disable : 6001)
+#pragma warning(disable : 26451)
+
 #define STB_IMAGE_IMPLEMENTATION
 #include "../../Libraries/stb_image.h"
+
+#pragma warning(pop)
 
 //------------------------ CONSTRUCTORS & DESTRUCTORS ------------------------//
 
 Sprite::Sprite(const char* path) {
+	if (path == NULL) {
+
+		if (DEBUGGING) {
+			WARNING_PRINT("Path to the image null!");
+		}
+
+		path = " ";
+	}
+
 	this->Path = path;
 	this->Image = this->LoadTexture(path);
 
@@ -18,8 +34,6 @@ Sprite::Sprite(const char* path) {
 
 		return;
 	}
-
-	PRINT("lol");
 
 	if (DEBUGGING) {
 		SUCCESS_PRINT("Image created correctly!");
@@ -148,6 +162,7 @@ GLuint Sprite::LoadTexture(const char* path) {
 	int width = 0;
 	int height = 0;
 	int nrChannels = 0;
+
 	unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
 
 	if (!data) {
@@ -193,7 +208,7 @@ const float* Sprite::GetPosition() const {
 	return this->Position;
 }
 
-float Sprite::GetRotation() const {
+double Sprite::GetRotation() const {
 	return this->Angle;
 }
 

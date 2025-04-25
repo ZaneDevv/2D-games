@@ -4,16 +4,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
-#include "../../Libraries/stb_image.h"
-
 #include "../../DebugHelper/Printing.h"
 #include "../../DebugHelper/Settings.h"
+
 
 struct Sprite {
 private:
 
 	float Scale = 1;
-	float Angle = 0;
+	double Angle = 0;
 	float Position[3] = { 0, 0, 0 };
 
 	/*
@@ -29,6 +28,12 @@ private:
 	*/
 	GLuint LoadTexture(const char* path);
 
+	/*
+	* @brief Updates the transform of the sprite
+	* @author ZaneDevv
+	*/
+	void UpdateTransform();
+
 public:
 	GLuint QuadVAO = 0;
 	GLuint QuadVBO = 0;
@@ -36,6 +41,8 @@ public:
 
 	GLuint Image = 0;
 	const char* Path = "";
+
+	Sprite();
 
 	/*
 	* @brief Creates a new sprite by the path of the image
@@ -62,7 +69,7 @@ public:
 	* @param Angle in radians
 	* @author ZaneDevv
 	*/
-	void Rotate(float) const;
+	void Rotate(double);
 
 	/*
 	* @brief Gets the position of the sprite
@@ -76,7 +83,7 @@ public:
 	* @return Angle of the rotation
 	* @author ZaneDevv
 	*/
-	float GetRotation() const;
+	double GetRotation() const;
 
 	/*
 	* @brief Gets the scale of the sprite

@@ -3,11 +3,10 @@
 #include "../General/Game.h"
 #include "../../DebugHelper/Printing.h"
 
-#include "../../Libraries/stb_image.h"
-
-
 class FlappyBird : public Game
 {
+private:
+
 public:
 	/*
 	* @brief Sets the value of the setting for this game once the game is created

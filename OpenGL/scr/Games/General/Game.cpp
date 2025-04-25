@@ -1,8 +1,5 @@
 #include "Game.h"
 
-//#define STB_IMAGE_IMPLEMENTATION
-//#include "../../Libraries/stb_image.h"
-
 //------------------------ TEXTURE FUNCTIONS ------------------------//
 
 Sprite Game::CreateImage(const char* path) {
@@ -89,10 +86,10 @@ void Game::CreateWindow() {
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GLFW_FALSE);
-	#ifdef __APPLE__
-		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-	#endif
-	
+#ifdef __APPLE__
+	glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
+#endif
+
 	this->window = glfwCreateWindow(this->screenWidth, this->screenHeight, this->screenName, NULL, NULL);
 	if (!this->window) {
 		glfwTerminate();
