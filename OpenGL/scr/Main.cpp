@@ -42,6 +42,9 @@ int main() {
 	choseGame->CreateWindow();
 	choseGame->StartLoop();
 
+
+	delete choseGame;
+
 	std::cin.get();
 	return SUCCESS;
 }

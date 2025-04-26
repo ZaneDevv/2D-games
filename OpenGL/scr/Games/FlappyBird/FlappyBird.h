@@ -7,6 +7,8 @@ class FlappyBird : public Game
 {
 private:
 
+	
+
 public:
 	/*
 	* @brief Sets the value of the setting for this game once the game is created

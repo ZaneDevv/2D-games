@@ -20,7 +20,7 @@ protected:
 
 	GLFWwindow* window = nullptr;
 
-	std::vector<Sprite> images = {};
+	std::vector<Sprite*> images = {};
 
 	/*
 	* @brief Creates a new image to render on Screen
@@ -28,7 +28,7 @@ protected:
 	* @return The sprite you have made
 	* @author ZaneDevv
 	*/
-	Sprite CreateImage(const char*);
+	Sprite* CreateImage(const char*);
 
 private:
 	GLuint shaderProgram = 0;

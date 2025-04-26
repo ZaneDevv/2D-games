@@ -2,12 +2,13 @@
 
 //------------------------ TEXTURE FUNCTIONS ------------------------//
 
-Sprite Game::CreateImage(const char* path) {
-	Sprite sprite(path);
+Sprite* Game::CreateImage(const char* path) {
+	if (DEBUGGING) {
+		DEBUG_PRINT("Creating image");
+	}
 
-	this->images.push_back(sprite);
-
-	return sprite;
+	this->images.push_back(new Sprite(path));
+	return this->images.back();
 }
 
 
@@ -164,9 +165,9 @@ void Game::UpdateGraphics() {
 	glClear(GL_COLOR_BUFFER_BIT);
 	glUseProgram(this->shaderProgram);
 
-	for (const Sprite& image : this->images) {
-		glBindVertexArray(image.QuadVAO);
-		glBindTexture(GL_TEXTURE_2D, image.Image);
+	for (Sprite* image : this->images) {
+		glBindVertexArray(image->QuadVAO);
+		glBindTexture(GL_TEXTURE_2D, image->Image);
 
 		glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
 	}
@@ -175,6 +176,10 @@ void Game::UpdateGraphics() {
 }
 
 void Game::CloseGame() {
+	for (Sprite* image : this->images) {
+		delete image;
+	}
+
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
 

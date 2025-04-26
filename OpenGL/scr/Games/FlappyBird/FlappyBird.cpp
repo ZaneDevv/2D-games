@@ -8,6 +8,7 @@ FlappyBird::FlappyBird() {
 
 void FlappyBird::OnScreenCreated() {
 	this->CreateImage("C:/Users/User/Pictures/Gorgeous/bm,.jpg");
+	//sprite->Rotate(2);
 }
 
 void FlappyBird::Update(double dt) {

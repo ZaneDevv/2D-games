@@ -12,6 +12,12 @@
 
 //------------------------ CONSTRUCTORS & DESTRUCTORS ------------------------//
 
+Sprite::Sprite() {
+	if (DEBUGGING) {
+		WARNING_PRINT("Empty sprite created.");
+	}
+}
+
 Sprite::Sprite(const char* path) {
 	if (path == NULL) {
 
@@ -42,14 +48,23 @@ Sprite::Sprite(const char* path) {
 
 Sprite::Sprite(const Sprite& sprite) {
 	this->Path = sprite.Path;
+
+	if (this->Path == NULL) {
+
+		if (DEBUGGING) {
+			WARNING_PRINT("Path to the image null!");
+		}
+
+		this->Path = " ";
+	}
+
 	this->Image = this->LoadTexture(this->Path);
 
 	this->Position[0] = sprite.GetPosition()[0];
 	this->Position[1] = sprite.GetPosition()[1];
-	this->Position[2] = sprite.GetPosition()[2];
 
 	this->Angle = sprite.GetRotation();
-	this->Scale = sprite.GetScale();
+	this->Size = sprite.GetScale();
 
 
 	this->CreateQuad();
@@ -104,10 +119,10 @@ Sprite::~Sprite() {
 void Sprite::CreateQuad() {
 	float vertices[] = {
 		// Positions         Texture coordinates
-		-1.0f,  1.0f, 0.0f,  0.0f, 1.0f, // Top - left
-		-1.0f, -1.0f, 0.0f,  0.0f, 0.0f, // Bottom - left
-		 1.0f, -1.0f, 0.0f,  1.0f, 0.0f, // Bottom - right
-		 1.0f,  1.0f, 0.0f,  1.0f, 1.0f  // Top - right
+		this->TopLeftVertex[0], this->TopLeftVertex[1], 0.0f,  0.0f, 1.0f, // Top - left
+		this->BottomLeftVertex[0], this->BottomLeftVertex[1], 0.0f,  0.0f, 0.0f, // Bottom - left
+		this->BottomRightVertex[0],  this->BottomRightVertex[1], 0.0f,  1.0f, 0.0f, // Bottom - right
+		this->TopRightVertex[0],  this->TopRightVertex[1], 0.0f,  1.0f, 1.0f  // Top - right
 	};
 	unsigned int indices[] = {
 		0, 1, 2,
@@ -151,8 +166,18 @@ void Sprite::CreateQuad() {
 
 GLuint Sprite::LoadTexture(const char* path) {
 	GLuint texture = 0;
+
 	glGenTextures(1, &texture);
+	GLenum error = glGetError();
+	if (error != GL_NO_ERROR && DEBUGGING) {
+		ERROR_PRINT("OpenGL error after glGenTextures: " << error);
+	}
+
 	glBindTexture(GL_TEXTURE_2D, texture);
+	error = glGetError();
+	if (error != GL_NO_ERROR && DEBUGGING) {
+		ERROR_PRINT("OpenGL error after glBindTexture: " << error);
+	}
 
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
@@ -202,6 +227,45 @@ GLuint Sprite::LoadTexture(const char* path) {
 
 
 
+//------------------------ TRANSFORM ------------------------//
+
+void Sprite::UpdateTransform() {
+	float rotatedX = (float)(this->Size * (cos(this->Angle) - sin(this->Angle)));
+	float rotatedY = (float)(this->Size * (cos(this->Angle) + sin(this->Angle)));
+
+	this->TopLeftVertex[0] = this->Position[0] - rotatedX;
+	this->TopLeftVertex[1] = this->Position[1] + rotatedY;
+
+	this->BottomLeftVertex[0] = this->Position[0] - rotatedX;
+	this->BottomLeftVertex[1] = this->Position[1] - rotatedY;
+
+	this->BottomRightVertex[0] = this->Position[0] + rotatedX;
+	this->BottomRightVertex[1] = this->Position[1] - rotatedY;
+
+	this->TopRightVertex[0] = this->Position[0] + rotatedX;
+	this->TopRightVertex[1] = this->Position[1] + rotatedY;
+
+	this->CreateQuad();
+}
+
+void Sprite::Rotate(double theta) {
+	this->Angle += theta;
+	this->UpdateTransform();
+}
+
+void Sprite::Translate(const float* move) {
+	this->Position[0] += move[0];
+	this->Position[1] += move[1];
+	this->UpdateTransform();
+}
+
+void Sprite::Scale(float scale) {
+	this->Size = scale;
+	this->UpdateTransform();
+}
+
+
+
 //------------------------ GETTERS & SETTERS ------------------------//
 
 const float* Sprite::GetPosition() const {
@@ -213,5 +277,5 @@ double Sprite::GetRotation() const {
 }
 
 float Sprite::GetScale() const {
-	return this->Scale;
+	return this->Size;
 }

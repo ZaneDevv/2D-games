@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <cmath>
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
 
@@ -11,9 +12,14 @@
 struct Sprite {
 private:
 
-	float Scale = 1;
+	float Size = 1;
 	double Angle = 0;
-	float Position[3] = { 0, 0, 0 };
+	float Position[2] = { 0, 0 };
+
+	float TopLeftVertex[2] = { -1.0f, 1.0f };
+	float BottomLeftVertex[2] = { -1.0f, -1.0f };
+	float BottomRightVertex[2] = { 1.0f, -1.0f };
+	float TopRightVertex[2] = { 1.0f, 1.0f };
 
 	/*
 	* @brief Creates a quad so we can render images on screen
@@ -70,6 +76,20 @@ public:
 	* @author ZaneDevv
 	*/
 	void Rotate(double);
+
+	/*
+	* @brief Moves the sprite towards the given direction
+	* @param Move vector
+	* @author ZaneDevv
+	*/
+	void Translate(const float*);
+
+	/*
+	* @brief Scales the sprite
+	* @param Amount
+	* @author ZaneDevv
+	*/
+	void Scale(float);
 
 	/*
 	* @brief Gets the position of the sprite
