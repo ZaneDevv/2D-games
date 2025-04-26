@@ -9,7 +9,7 @@ FlappyBird::FlappyBird() {
 }
 
 void FlappyBird::OnScreenCreated() {
-	float position[2] = { -60.0f, 0.0f };
+	float position[2] = { -600.0f, 0.0f };
 
 	Sprite* sprite = this->CreateImage("C:/Users/User/Pictures/Gorgeous/bm,.jpg");
 	sprite->Scale(.05f);

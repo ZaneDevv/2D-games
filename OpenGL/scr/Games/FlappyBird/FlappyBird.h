@@ -7,10 +7,10 @@ class FlappyBird : public Game
 {
 private:
 
-	const float GRAVITY = -0.02f;
+	const float GRAVITY = -0.1f;
 	float VerticalVelocity = GRAVITY;
 	
-	const float JumpPower = 0.8f;
+	const float JumpPower = 5.0f;
 
 	Sprite* Bird = nullptr;
 
