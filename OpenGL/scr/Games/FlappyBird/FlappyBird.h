@@ -10,7 +10,7 @@ private:
 	const float GRAVITY = -0.02f;
 	float VerticalVelocity = GRAVITY;
 	
-	const float JumpPower = 0.3f;
+	const float JumpPower = 0.8f;
 
 	Sprite* Bird = nullptr;
 

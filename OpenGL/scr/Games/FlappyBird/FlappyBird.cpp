@@ -37,7 +37,9 @@ void FlappyBird::UpdatePhysics() {
 }
 
 void FlappyBird::OnInputDetected(int input) {
-	if (input != 32) { return; } // Only space required
-	
-	this->VerticalVelocity = this->JumpPower;
+	if (input != GLFW_KEY_SPACE) { return; }
+
+	if (this->VerticalVelocity <= 0.01f) { // Cannot spam the jump button
+		this->VerticalVelocity = this->JumpPower;
+	}
 }
