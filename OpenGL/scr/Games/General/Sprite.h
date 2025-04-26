@@ -16,6 +16,9 @@ private:
 	double Angle = 0;
 	float Position[2] = { 0, 0 };
 
+	int width = 0;
+	int height = 0;
+
 	float TopLeftVertex[2] = { -1.0f, 1.0f };
 	float BottomLeftVertex[2] = { -1.0f, -1.0f };
 	float BottomRightVertex[2] = { 1.0f, -1.0f };
@@ -111,4 +114,25 @@ public:
 	* @author ZaneDevv
 	*/
 	float GetScale() const;
+
+	/*
+	* @brief Sets the position to a specific point
+	* @param The new position
+	* @author zaneDevv
+	*/
+	void SetPosition(const float*);
+
+	/*
+	* @brief Sets the scale to a specific number
+	* @param The new size
+	* @author zaneDevv
+	*/
+	void SetScale(float);
+
+	/*
+	* @brief Sets the rotation to a specific angle
+	* @param The new angle
+	* @author zaneDevv
+	*/
+	void SetRotation(double);
 };

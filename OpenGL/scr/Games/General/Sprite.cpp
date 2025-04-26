@@ -184,11 +184,8 @@ GLuint Sprite::LoadTexture(const char* path) {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 
-	int width = 0;
-	int height = 0;
 	int nrChannels = 0;
-
-	unsigned char* data = stbi_load(path, &width, &height, &nrChannels, 0);
+	unsigned char* data = stbi_load(path, &this->width, &this->height, &nrChannels, 0);
 
 	if (!data) {
 
@@ -200,12 +197,16 @@ GLuint Sprite::LoadTexture(const char* path) {
 		return texture;
 	}
 
+	if (DEBUGGING) {
+		DEBUG_PRINT("Image loaded: " << std::endl << "- width: " << this->width << std::endl << "- height: " << this->height);
+	}
+
 	// Checking if the GPU can work with the size of the image
 	GLint maxTextureSize = 0;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
 
-	if (width > maxTextureSize || height > maxTextureSize) {
-		ERROR_PRINT("Texture exceeds max allowed size: " << width << "x" << height);
+	if (this->width > maxTextureSize || this->height > maxTextureSize) {
+		ERROR_PRINT("Texture exceeds max allowed size: " << this->width << "x" << this->height);
 		stbi_image_free(data);
 		return texture;
 	}
@@ -217,7 +218,7 @@ GLuint Sprite::LoadTexture(const char* path) {
 		return texture;
 	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, width, height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->width, this->height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
@@ -230,20 +231,24 @@ GLuint Sprite::LoadTexture(const char* path) {
 //------------------------ TRANSFORM ------------------------//
 
 void Sprite::UpdateTransform() {
-	float rotatedX = (float)(this->Size * (cos(this->Angle) - sin(this->Angle)));
-	float rotatedY = (float)(this->Size * (cos(this->Angle) + sin(this->Angle)));
+	float size = this->Size * .005f;
+	float cosine = cos(this->Angle);
+	float sine = sin(this->Angle);
 
-	this->TopLeftVertex[0] = this->Position[0] - rotatedX;
-	this->TopLeftVertex[1] = this->Position[1] + rotatedY;
+	float dx[4] = { -size * this->width, -size * this->width, size * this->width, size * this->width };
+	float dy[4] = { size * this->height, -size * this->height, -size * this->height, size * this->height };
 
-	this->BottomLeftVertex[0] = this->Position[0] - rotatedX;
-	this->BottomLeftVertex[1] = this->Position[1] - rotatedY;
+	this->TopLeftVertex[0] = this->Position[0] + dx[0] * cosine - dy[0] * sine;
+	this->TopLeftVertex[1] = this->Position[1] + dx[0] * sine + dy[0] * cosine;
 
-	this->BottomRightVertex[0] = this->Position[0] + rotatedX;
-	this->BottomRightVertex[1] = this->Position[1] - rotatedY;
+	this->BottomLeftVertex[0] = this->Position[0] + dx[1] * cosine - dy[1] * sine;
+	this->BottomLeftVertex[1] = this->Position[1] + dx[1] * sine + dy[1] * cosine;
 
-	this->TopRightVertex[0] = this->Position[0] + rotatedX;
-	this->TopRightVertex[1] = this->Position[1] + rotatedY;
+	this->BottomRightVertex[0] = this->Position[0] + dx[2] * cosine - dy[2] * sine;
+	this->BottomRightVertex[1] = this->Position[1] + dx[2] * sine + dy[2] * cosine;
+
+	this->TopRightVertex[0] = this->Position[0] + dx[3] * cosine - dy[3] * sine;
+	this->TopRightVertex[1] = this->Position[1] + dx[3] * sine + dy[3] * cosine;
 
 	this->CreateQuad();
 }
@@ -278,4 +283,30 @@ double Sprite::GetRotation() const {
 
 float Sprite::GetScale() const {
 	return this->Size;
+}
+
+void Sprite::SetPosition(const float* position) {
+	if (position == nullptr) {
+
+		if (DEBUGGING) {
+			ERROR_PRINT("Cannot set a null pointer as the position.");
+		}
+
+		return;
+	}
+
+	this->Position[0] = position[0];
+	this->Position[1] = position[1];
+
+	this->UpdateTransform();
+}
+
+void Sprite::SetScale(float size) {
+	this->Size = size;
+	this->UpdateTransform();
+}
+
+void Sprite::SetRotation(double theta) {
+	this->Angle = theta;
+	this->UpdateTransform();
 }

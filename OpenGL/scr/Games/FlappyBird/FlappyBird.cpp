@@ -1,5 +1,7 @@
 ﻿#include "FlappyBird.h"
 
+#define PI 3.141592653589793
+
 FlappyBird::FlappyBird() {
 	this->screenWidth = 600;
 	this->screenHeight = 800;
@@ -7,8 +9,9 @@ FlappyBird::FlappyBird() {
 }
 
 void FlappyBird::OnScreenCreated() {
-	this->CreateImage("C:/Users/User/Pictures/Gorgeous/bm,.jpg");
-	//sprite->Rotate(2);
+	Sprite* sprite = this->CreateImage("C:/Users/User/Pictures/Gorgeous/bm,.jpg");
+	sprite->Scale(.05f);
+	sprite->Rotate(PI);
 }
 
 void FlappyBird::Update(double dt) {
