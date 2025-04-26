@@ -206,14 +206,28 @@ GLuint Sprite::LoadTexture(const char* path) {
 		return texture;
 	}
 
-	// Checking if the image has a supported number of channels
-	if (nrChannels != 3 && nrChannels != 4) {
-		ERROR_PRINT("Unsupported image format -> Only RGB or RGBA allowed.");
+	// Checking the channels the image needs
+	GLenum format = 0;
+	if (nrChannels == 1)
+		format = GL_RED;
+
+	else if (nrChannels == 3)
+		format = GL_RGB;
+
+	else if (nrChannels == 4)
+		format = GL_RGBA;
+	else {
+
+		if (DEBUGGING) {
+			ERROR_PRINT("Unsupported image format -> Only RGB or RGBA allowed.");
+		}
+		
+		
 		stbi_image_free(data);
 		return texture;
 	}
 
-	glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, this->width, this->height, 0, GL_RGB, GL_UNSIGNED_BYTE, data);
+	glTexImage2D(GL_TEXTURE_2D, 0, format, this->width, this->height, 0, format, GL_UNSIGNED_BYTE, data);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(data);
@@ -228,8 +242,8 @@ GLuint Sprite::LoadTexture(const char* path) {
 void Sprite::UpdateTransform() {
 	// Calculating the new position of each vertex
 	float size = this->Size * .005f;
-	float cosine = cos(this->Angle);
-	float sine = sin(this->Angle);
+	float cosine = (float)cos(this->Angle);
+	float sine = (float)sin(this->Angle);
 
 	float dx[4] = { -size * this->width, -size * this->width, size * this->width, size * this->width };
 	float dy[4] = { size * this->height, -size * this->height, -size * this->height, size * this->height };
@@ -255,6 +269,15 @@ void Sprite::Rotate(double theta) {
 }
 
 void Sprite::Translate(const float* move) {
+	if (move == nullptr) {
+
+		if (DEBUGGING) {
+			ERROR_PRINT("Cannot move null");
+		}
+
+		return;
+	}
+
 	this->Position[0] += move[0] / this->width;
 	this->Position[1] += move[1] / this->height;
 	this->UpdateTransform();

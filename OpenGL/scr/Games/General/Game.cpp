@@ -104,6 +104,10 @@ void Game::CreateWindow() {
 
 	glfwMakeContextCurrent(this->window);
 
+	// Enable alpha channel (transparency)
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 	// Initializing glew to have modern OpenGL functions
 	glewExperimental = GL_TRUE;
 	GLenum glewStatus = glewInit();
@@ -183,6 +187,8 @@ void Game::CloseGame() {
 
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
+
+	this->OnGameClose();
 
 	if (DEBUGGING) {
 		DEBUG_PRINT("Game closed correctly!");

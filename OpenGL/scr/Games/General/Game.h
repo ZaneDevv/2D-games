@@ -111,7 +111,7 @@ public:
 	* @brief Updates graphics
 	* @author ZaneDevv
 	*/
-	void UpdateGraphics() ;
+	void UpdateGraphics();
 
 	/*
 	* @brief Starts the game
@@ -124,4 +124,10 @@ public:
 	* @author ZaneDevv
 	*/
 	void CloseGame();
+
+	/*
+	* @brief Fires when the game is closed
+	* @author ZaneDevv
+	*/
+	virtual void OnGameClose() = 0;
 };

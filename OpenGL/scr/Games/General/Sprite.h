@@ -16,9 +16,6 @@ private:
 	double Angle = 0;
 	float Position[2] = { 0, 0 };
 
-	int width = 0;
-	int height = 0;
-
 	float TopLeftVertex[2] = { -1.0f, 1.0f };
 	float BottomLeftVertex[2] = { -1.0f, -1.0f };
 	float BottomRightVertex[2] = { 1.0f, -1.0f };
@@ -50,6 +47,9 @@ public:
 
 	GLuint Image = 0;
 	const char* Path = "";
+
+	int width = 0;
+	int height = 0;
 
 	Sprite();
 

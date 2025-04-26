@@ -14,7 +14,7 @@ int main() {
 	unsigned short choseGameIndex = 0;
 
 	while (choseGameIndex == 0) {
-		PRINT("Which game do you want to play? \n 1. Flappy Bird.");
+		PRINT("Which game do you want to play? \n - Flappy Bird (1).");
 
 		std::cout << ">> ";
 		std::cin >> choseGameIndex;

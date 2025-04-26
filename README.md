@@ -9,3 +9,7 @@ This project uses several frameworks as [`OpenGL`](https://www.opengl.org/), [`s
 <ul>
 	<li>Flappy Bird</li>
 </ul>
+
+## Flappy Bird
+
+The assets I used in this game were obteined in another [`repository`](https://github.com/samuelcust/flappy-bird-assets) on GitHub.
