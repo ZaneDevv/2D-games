@@ -259,8 +259,8 @@ void Sprite::Rotate(double theta) {
 }
 
 void Sprite::Translate(const float* move) {
-	this->Position[0] += move[0];
-	this->Position[1] += move[1];
+	this->Position[0] += move[0] / 1e2;
+	this->Position[1] += move[1] / 1e2;
 	this->UpdateTransform();
 }
 
@@ -295,8 +295,8 @@ void Sprite::SetPosition(const float* position) {
 		return;
 	}
 
-	this->Position[0] = position[0];
-	this->Position[1] = position[1];
+	this->Position[0] = position[0] / 1e2;
+	this->Position[1] = position[1] / 1e2;
 
 	this->UpdateTransform();
 }
