@@ -118,11 +118,11 @@ Sprite::~Sprite() {
 
 void Sprite::CreateQuad() {
 	float vertices[] = {
-		// Positions         Texture coordinates
-		this->TopLeftVertex[0], this->TopLeftVertex[1], 0.0f,  0.0f, 1.0f, // Top - left
-		this->BottomLeftVertex[0], this->BottomLeftVertex[1], 0.0f,  0.0f, 0.0f, // Bottom - left
-		this->BottomRightVertex[0],  this->BottomRightVertex[1], 0.0f,  1.0f, 0.0f, // Bottom - right
-		this->TopRightVertex[0],  this->TopRightVertex[1], 0.0f,  1.0f, 1.0f,  // Top - right
+		// Positions           Texture coordinates
+		this->TopLeftVertex[0], this->TopLeftVertex[1], 0.0f,  1.0f, 1.0f, // Top - left
+		this->BottomLeftVertex[0], this->BottomLeftVertex[1], 0.0f,  1.0f, 0.0f, // Bottom - left
+		this->BottomRightVertex[0],  this->BottomRightVertex[1], 0.0f,  0.0f, 0.0f, // Bottom - right
+		this->TopRightVertex[0],  this->TopRightVertex[1], 0.0f,  0.0f, 1.0f,  // Top - right
 	};
 	unsigned int indices[] = {
 		0, 1, 2,
