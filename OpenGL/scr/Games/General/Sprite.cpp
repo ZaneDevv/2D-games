@@ -122,7 +122,7 @@ void Sprite::CreateQuad() {
 		this->TopLeftVertex[0], this->TopLeftVertex[1], 0.0f,  0.0f, 1.0f, // Top - left
 		this->BottomLeftVertex[0], this->BottomLeftVertex[1], 0.0f,  0.0f, 0.0f, // Bottom - left
 		this->BottomRightVertex[0],  this->BottomRightVertex[1], 0.0f,  1.0f, 0.0f, // Bottom - right
-		this->TopRightVertex[0],  this->TopRightVertex[1], 0.0f,  1.0f, 1.0f  // Top - right
+		this->TopRightVertex[0],  this->TopRightVertex[1], 0.0f,  1.0f, 1.0f,  // Top - right
 	};
 	unsigned int indices[] = {
 		0, 1, 2,
@@ -140,11 +140,6 @@ void Sprite::CreateQuad() {
 		}
 
 		return;
-	}
-
-
-	if (DEBUGGING) {
-		DEBUG_PRINT("Buffers initializated");
 	}
 
 	glBindVertexArray(this->QuadVAO);
@@ -231,6 +226,7 @@ GLuint Sprite::LoadTexture(const char* path) {
 //------------------------ TRANSFORM ------------------------//
 
 void Sprite::UpdateTransform() {
+	// Calculating the new position of each vertex
 	float size = this->Size * .005f;
 	float cosine = cos(this->Angle);
 	float sine = sin(this->Angle);

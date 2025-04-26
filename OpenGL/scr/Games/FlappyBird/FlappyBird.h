@@ -7,7 +7,13 @@ class FlappyBird : public Game
 {
 private:
 
+	const float GRAVITY = -0.02f;
+	float VerticalVelocity = GRAVITY;
 	
+	const float JumpPower = 0.3f;
+
+	Sprite* Bird = nullptr;
+
 
 public:
 	/*
@@ -33,4 +39,11 @@ public:
 	* @author ZaneDevv
 	*/
 	void UpdatePhysics();
+
+	/*
+	* @brief Executes when a input is detected
+	* @param Input key
+	* @author ZaneDevv
+	*/
+	void OnInputDetected(int) override;
 };

@@ -30,6 +30,19 @@ protected:
 	*/
 	Sprite* CreateImage(const char*);
 
+	/*
+	* @brief Fires when an input is detected
+	* @param Input key
+	* @author ZaneDevv
+	*/
+	virtual void OnInputDetected(int) = 0;
+
+	/*
+	* @brief Detects an input and fires OnInputDetected() method
+	* @author ZaneDevv
+	*/
+	void DetectInput();
+
 private:
 	GLuint shaderProgram = 0;
 

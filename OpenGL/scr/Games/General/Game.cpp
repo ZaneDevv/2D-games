@@ -151,6 +151,7 @@ void Game::StartLoop() {
 		deltaTime = currentTime - lastTime;
 		lastTime = currentTime;
 
+		this->DetectInput();
 		this->UpdateGraphics();
 		this->Update(deltaTime);
 
@@ -185,5 +186,18 @@ void Game::CloseGame() {
 
 	if (DEBUGGING) {
 		DEBUG_PRINT("Game closed correctly!");
+	}
+}
+
+
+
+//------------------------ INPUT FUNCTIONS ------------------------//
+
+void Game::DetectInput() {
+	for (int key = GLFW_KEY_SPACE; key <= GLFW_KEY_LAST; ++key) {
+		if (glfwGetKey(window, key) != GLFW_PRESS) { return; }
+
+		OnInputDetected(key);
+		break; 
 	}
 }
