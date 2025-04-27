@@ -18,7 +18,7 @@ private:
 	bool hasGameFinished = false;
 	double timePlaying = 0;
 
-	const float PipeHorizontalSpeed = 20.0f;
+	const float PipeHorizontalSpeed = 30.0f;
 
 	const float GRAVITY = -10.0f;
 	float VerticalVelocity = GRAVITY;
@@ -29,6 +29,7 @@ private:
 	const int gapVerticalSize = 145;
 	const int distanceBetweenPipes = 50;
 	const int startingPipesXPosition = 75;
+	const int startPositionWhenMovedBack = -1.5f + (float)this->distanceBetweenPipes * 4;
 	const float pipesScale = 0.75f;
 
 	Sprite* Bird = nullptr;

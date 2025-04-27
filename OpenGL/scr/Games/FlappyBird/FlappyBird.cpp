@@ -49,9 +49,11 @@ void FlappyBird::Update(double dt) {
 	this->UpdatePhysics(dt);
 	timePlaying += dt;
 
-	if (timePlaying > 1.5) {
+	// If the player has been playing time enough, pipes will start moving to the left
+	if (timePlaying > 1) {
 		float translation[2] = { (float)dt * -this->PipeHorizontalSpeed, 0.0f };
 
+		// Check each pipe to move and check collisions
 		for (std::array<Sprite*, 2> pipe : this->Pipes) {
 			if (pipe[0] == nullptr || pipe[1] == nullptr) {
 				
@@ -67,11 +69,13 @@ void FlappyBird::Update(double dt) {
 			pipe[1]->Translate(translation);
 
 			// Check if the pipes should go back
-			if (pipe[0]->GetPosition()[0] < -4) {
-				this->SetPipesPosition(pipe[0], pipe[1], (float)this->startingPipesXPosition);
+			if (pipe[0]->GetPosition()[0] <= -1.5f) {
+
+				// Move the pipes to the last position
+				this->SetPipesPosition(pipe[0], pipe[1], startPositionWhenMovedBack);
 
 				if (DEBUGGING) {
-					PRINT("Pipe moved");
+					DEBUG_PRINT("Pipe moved");
 				}
 			}
 
