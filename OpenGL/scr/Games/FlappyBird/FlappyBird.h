@@ -33,7 +33,7 @@ private:
 
 	Sprite* Bird = nullptr;
 
-	std::vector<Sprite*> Pipes = {};
+	std::vector<std::array<Sprite*, 2>> Pipes = {};
 
 
 public:
@@ -74,6 +74,15 @@ public:
 	* @author ZaneDevv
 	*/
 	void Die();
+
+	/*
+	* @brief Sets the pipes where they will be to make the game possible
+	* @param Reference to the top pipe
+	* @param Reference to the bottom pipe
+	* @param The X position where the pipe will start from
+	* @author ZaneDevv
+	*/
+	void SetPipesPosition(Sprite*, Sprite*, float);
 
 	/*
 	* @brief Executes when a input is detected

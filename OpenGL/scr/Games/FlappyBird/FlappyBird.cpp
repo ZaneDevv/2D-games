@@ -16,8 +16,6 @@ void FlappyBird::OnScreenCreated() {
 
 	// Adding the pipes
 	for (short i = 0; i <= 4; i++) {
-		int gabY = (rand() % 100) - 50;
-
 		float xPosition = (float)this->startingPipesXPosition + i * (float)this->distanceBetweenPipes;
 
 		Sprite* pipe1 = this->CreateImage("C:/Users/User/source/repos/OpenGL/OpenGL/scr/Games/FlappyBird/Images/pipe-green.png");
@@ -27,14 +25,10 @@ void FlappyBird::OnScreenCreated() {
 		pipe2->Rotate(PI);
 		pipe2->SetScale(this->pipesScale);
 
-		float positionPipe2[2] = { xPosition, gabY - this->gapVerticalSize - pipe1->height };
-		float positionPipe1[2] = { xPosition, gabY + this->gapVerticalSize + pipe2->height };
-		
-		pipe1->SetPosition(positionPipe1);
-		pipe2->SetPosition(positionPipe2);
+		this->SetPipesPosition(pipe1, pipe2, xPosition);
 
-		this->Pipes.push_back(pipe1);
-		this->Pipes.push_back(pipe2);
+		std::array<Sprite*, 2> pipes = { pipe1, pipe2 };
+		this->Pipes.push_back(pipes);
 	}
 
 	// Adding the bird
@@ -58,8 +52,8 @@ void FlappyBird::Update(double dt) {
 	if (timePlaying > 1.5) {
 		float translation[2] = { (float)dt * -this->PipeHorizontalSpeed, 0.0f };
 
-		for (Sprite* pipe : this->Pipes) {
-			if (pipe == nullptr) {
+		for (std::array<Sprite*, 2> pipe : this->Pipes) {
+			if (pipe[0] == nullptr || pipe[1] == nullptr) {
 				
 				if (DEBUGGING) {
 					WARNING_PRINT("Null pipe!");
@@ -68,9 +62,21 @@ void FlappyBird::Update(double dt) {
 				continue;
 			}
 
-			pipe->Translate(translation);
+			// Move both pipes
+			pipe[0]->Translate(translation);
+			pipe[1]->Translate(translation);
 
-			if (DoesBirdOverlapAPipe(pipe)) {
+			// Check if the pipes should go back
+			if (pipe[0]->GetPosition()[0] < -4) {
+				this->SetPipesPosition(pipe[0], pipe[1], (float)this->startingPipesXPosition);
+
+				if (DEBUGGING) {
+					PRINT("Pipe moved");
+				}
+			}
+
+			// Checking the collision with the bird
+			if (DoesBirdOverlapAPipe(pipe[0]) || DoesBirdOverlapAPipe(pipe[1])) {
 				this->Die();
 			}
 		}
@@ -126,14 +132,22 @@ bool FlappyBird::DoesBirdOverlapAPipe(Sprite* pipe) {
 	return aabbX && aabbY;
 }
 
-
-
 void FlappyBird::Die() {
 	if (DEBUGGING) {
 		DEBUG_PRINT("Player has died!");
 	}
 
 	hasGameFinished = true;
+}
+
+void FlappyBird::SetPipesPosition(Sprite* pipe1, Sprite* pipe2, float startX) {
+	int gabY = (rand() % 100) - 50;
+
+	float positionPipe2[2] = { startX, gabY - this->gapVerticalSize - pipe1->height };
+	float positionPipe1[2] = { startX, gabY + this->gapVerticalSize + pipe2->height };
+
+	pipe1->SetPosition(positionPipe1);
+	pipe2->SetPosition(positionPipe2);
 }
 
 void FlappyBird::OnInputDetected(int input) {
@@ -153,7 +167,8 @@ void FlappyBird::OnInputDetected(int input) {
 }
 
 void FlappyBird::OnGameClose() {
-	for (Sprite* pipe : this->Pipes) {
-		delete pipe;
+	for (std::array<Sprite*, 2> pipe : this->Pipes) {
+		delete pipe[0];
+		delete pipe[1];
 	}
 }
