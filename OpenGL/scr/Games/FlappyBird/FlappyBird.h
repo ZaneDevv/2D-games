@@ -3,6 +3,8 @@
 #include <cmath>
 #include <cstdlib>
 #include <vector>
+#include <array>
+#include <algorithm>
 
 #include "../General/Game.h"
 #include "../../DebugHelper/Printing.h"

@@ -329,3 +329,10 @@ void Sprite::SetRotation(double theta) {
 	this->Angle = theta;
 	this->UpdateTransform();
 }
+
+void Sprite::GetVertices(float*& topLeft, float*& bottomLeft, float*& bottomRight, float*& topRight) {
+	topLeft = this->TopLeftVertex;
+	bottomLeft = this->BottomLeftVertex;
+	bottomRight = this->BottomRightVertex;
+	topRight = this->TopRightVertex;
+}

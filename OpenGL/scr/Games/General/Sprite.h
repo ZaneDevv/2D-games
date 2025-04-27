@@ -135,4 +135,14 @@ public:
 	* @author zaneDevv
 	*/
 	void SetRotation(double);
+
+	/*
+	* @brief Gives you the vertices of the sprite
+	* @param Reference to an array with the top left vertex coordinates
+	* @param Reference to an array with the bottom left vertex coordinates
+	* @param Reference to an array with the bottom right vertex coordinates
+	* @param Reference to an array with the top right vertex coordinates
+	* @author ZaneDevv
+	*/
+	void GetVertices(float*&, float*&, float*&, float*&);
 };

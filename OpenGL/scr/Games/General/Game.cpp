@@ -185,10 +185,11 @@ void Game::CloseGame() {
 		delete image;
 	}
 
+	this->OnGameClose();
+
 	glfwDestroyWindow(this->window);
 	glfwTerminate();
 
-	this->OnGameClose();
 
 	if (DEBUGGING) {
 		DEBUG_PRINT("Game closed correctly!");

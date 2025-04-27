@@ -92,25 +92,40 @@ void FlappyBird::UpdatePhysics(double dt) {
 }
 
 bool FlappyBird::DoesBirdOverlapAPipe(Sprite* pipe) {
-	// TODO: Rewrite this method
+	// Getting the vertices of both bird and pipe
 
-	/*float birdLeft = this->Bird->GetPosition()[0] - this->Bird->width * this->Bird->GetScale();
-	float birdRight = this->Bird->GetPosition()[0] + this->Bird->width * this->Bird->GetScale();
-	float birdTop = this->Bird->GetPosition()[1] + this->Bird->height * this->Bird->GetScale();
-	float birdBottom = this->Bird->GetPosition()[1] - this->Bird->height * this->Bird->GetScale();
+	float* topLeftPipe = nullptr;
+	float* bottomLeftPipe = nullptr;
+	float* bottomRightPipe = nullptr;
+	float* topRightPipe = nullptr;
 
-	float pipeLeft = pipe->GetPosition()[0] - pipe->width * pipe->GetScale();
-	float pipeRight = pipe->GetPosition()[0] + pipe->width * pipe->GetScale();
-	float pipeTop = pipe->GetPosition()[1] + pipe->height * pipe->GetScale();
-	float pipeBottom = pipe->GetPosition()[1] - pipe->height * pipe->GetScale();
+	pipe->GetVertices(topLeftPipe, bottomLeftPipe, bottomRightPipe, topRightPipe);
 
-	bool aabbX = birdRight >= pipeLeft && birdLeft <= pipeRight;
-	bool aabbY = birdTop >= pipeBottom && birdBottom <= pipeTop;
+	float* topLeftBird = nullptr;
+	float* bottomLeftBird = nullptr;
+	float* bottomRightBird = nullptr;
+	float* topRightBird = nullptr;
 
-	return aabbX && aabbY;*/
+	this->Bird->GetVertices(topLeftBird, bottomLeftBird, bottomRightBird, topRightBird);
 
-	return false;
+	// Calculate min and max (the rotation of the bird can make the player struggle a lot)
+	float birdMinX = std::min({ topLeftBird[0], bottomLeftBird[0], bottomRightBird[0], topRightBird[0] });
+	float birdMaxX = std::max({ topLeftBird[0], bottomLeftBird[0], bottomRightBird[0], topRightBird[0] });
+	float birdMinY = std::min({ topLeftBird[1], bottomLeftBird[1], bottomRightBird[1], topRightBird[1] });
+	float birdMaxY = std::max({ topLeftBird[1], bottomLeftBird[1], bottomRightBird[1], topRightBird[1] });
+
+	float pipeMinX = std::min({ topLeftPipe[0], bottomLeftPipe[0], bottomRightPipe[0], topRightPipe[0] });
+	float pipeMaxX = std::max({ topLeftPipe[0], bottomLeftPipe[0], bottomRightPipe[0], topRightPipe[0] });
+	float pipeMinY = std::min({ topLeftPipe[1], bottomLeftPipe[1], bottomRightPipe[1], topRightPipe[1] });
+	float pipeMaxY = std::max({ topLeftPipe[1], bottomLeftPipe[1], bottomRightPipe[1], topRightPipe[1] });
+
+	// AABB overlap check
+	bool aabbX = (birdMinX < pipeMaxX) && (birdMaxX > pipeMinX);
+	bool aabbY = (birdMinY < pipeMaxY) && (birdMaxY > pipeMinY);
+
+	return aabbX && aabbY;
 }
+
 
 
 void FlappyBird::Die() {
